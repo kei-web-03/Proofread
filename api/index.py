@@ -8,9 +8,17 @@ import json
 from pathlib import Path
 
 import anthropic
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 
 app = Flask(__name__)
+
+# ── フロントエンド配信 ──────────────────────────────────────
+HTML_FILE = Path(__file__).resolve().parent.parent / "public" / "index.html"
+
+
+@app.route("/")
+def index():
+    return send_file(HTML_FILE)
 
 # ── writing_rules.txt の読み込み ──────────────────────────────
 RULES_FILE = Path(__file__).resolve().parent.parent / "writing_rules.txt"
