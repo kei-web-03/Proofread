@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 
 import anthropic
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, Response
 
 app = Flask(__name__)
 
@@ -18,7 +18,11 @@ HTML_FILE = Path(__file__).resolve().parent.parent / "public" / "index.html"
 
 @app.route("/")
 def index():
-    return send_file(HTML_FILE)
+    try:
+        html = HTML_FILE.read_text(encoding="utf-8")
+        return Response(html, mimetype="text/html")
+    except FileNotFoundError:
+        return "index.html not found", 404
 
 # ── writing_rules.txt の読み込み ──────────────────────────────
 RULES_FILE = Path(__file__).resolve().parent.parent / "writing_rules.txt"
@@ -185,3 +189,4 @@ def _error_response(status_code: int, message: str):
     response.status_code = status_code
     response.headers["Access-Control-Allow-Origin"] = "*"
     return response
+
