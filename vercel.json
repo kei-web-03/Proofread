@@ -4,6 +4,7 @@
   ],
   "functions": {
     "api/proofread.py": {
+      "runtime": "@vercel/python",
       "maxDuration": 60
     }
   }
